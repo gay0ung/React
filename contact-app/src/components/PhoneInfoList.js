@@ -1,20 +1,28 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PhoneInfo from './PhoneInfo';
+import '../assets/sass/phoneInfoList.scss';
 
-class PhoneInfoList extends Component {
-  render() {
-    const { data, onRemove, onUpdate } = this.props;
-    const list = data.map((info) => (
-      <PhoneInfo
-        onRemove={onRemove}
-        onUpdate={onUpdate}
-        info={info}
-        key={info.id}
-      />
-    ));
+const PhoneInfoList = ({ data, onRemove, onUpdate, keyword }) => {
+  if (!data) return null;
 
-    return <div>{list}</div>;
-  }
-}
+  return (
+    <div className="list-wrap">
+      {data.length < 1 ? (
+        <div>'{keyword}' 검색 결과가 없습니다.</div>
+      ) : (
+        data.map((info) => {
+          return (
+            <PhoneInfo
+              onRemove={onRemove}
+              info={info}
+              key={info.id}
+              onUpdate={onUpdate}
+            />
+          );
+        })
+      )}
+    </div>
+  );
+};
 
 export default PhoneInfoList;

@@ -1,0 +1,106 @@
+.list-wrap {
+  padding: 20px;
+  grid-auto-rows: max-content;
+  display: grid;
+  gap: 20px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 50px;
+    background-color: rgba(186, 192, 180, 0.226);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #b4b4b4;
+    border-radius: 50px;
+  }
+}
+
+.address {
+  border: 1px solid rgba(211, 211, 211, 0.349);
+  position: relative;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 3px 3px 3px rgba(211, 211, 211, 0.246);
+  button {
+    position: absolute;
+    color: rgba(155, 153, 153, 0.431);
+    background-color: transparent;
+    font-family: '한나체';
+    font-size: 1em;
+    &.delete-btn {
+      right: 10px;
+      top: 9px;
+      &:hover {
+        color: rgb(175, 25, 25);
+      }
+    }
+    &.edit-btn {
+      right: 10px;
+      bottom: 9px;
+      &:hover {
+        color: rgb(67, 175, 25);
+      }
+    }
+  }
+
+  .address-info {
+    grid-template-areas:
+      'icon name'
+      'icon phone';
+    height: 100%;
+    display: grid;
+    grid-auto-rows: max-content;
+    justify-items: center;
+    align-content: space-between;
+    grid-template-columns: max-content 60%;
+    justify-items: start;
+    column-gap: 20px;
+    .address-icon {
+      grid-area: icon;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 50px;
+      height: 50px;
+      background-image: url('../images/—Pngtree—user\ icon_4479727.png');
+      background-color: rgba(154, 158, 155, 0.829);
+      border-radius: 50%;
+    }
+    b {
+      grid-area: name;
+    }
+    p {
+      grid-area: phone;
+    }
+  }
+
+  &.edit {
+    display: grid;
+    gap: 10px;
+    > div {
+      background-color: #b4b4b4a6;
+      color: #ffffff;
+      width: 70%;
+      display: grid;
+      align-items: center;
+      grid-template-columns: max-content 1fr;
+      padding: 0 3px;
+      gap: 4px;
+      input {
+        background-color: whitesmoke;
+      }
+    }
+
+    .edit-btn {
+      bottom: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 40px;
+      font-size: 1.3em;
+      font-family: '한나체';
+      &:hover {
+        color: rgb(25, 140, 175);
+      }
+    }
+  }
+}

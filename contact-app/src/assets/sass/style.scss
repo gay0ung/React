@@ -1,0 +1,61 @@
+@font-face {
+  font-family: '한나체';
+  src: url('./BMHANNAPro.ttf');
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  font-family: '한나체';
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input {
+  padding: 10px;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
+
+#root {
+  display: grid;
+  justify-items: center;
+  height: 100vh;
+  width: 100%;
+  padding: 50px;
+}
+
+.address-wrap {
+  display: inherit;
+  grid-template-rows: repeat(3, max-content) 1fr;
+  overflow: hidden;
+  width: 50%;
+  min-width: 700px;
+  row-gap: 20px;
+  h1 {
+    text-align: center;
+    padding-bottom: 30px;
+  }
+}
+
+button {
+  &:focus {
+    outline: none;
+  }
+  border: none;
+  cursor: pointer;
+}
+
+.search-number {
+  background-color: whitesmoke;
+}

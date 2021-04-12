@@ -1,54 +1,66 @@
-import React, { Component } from 'react';
+import React, { useRef, useState } from 'react';
+import '../assets/sass/phoneForm.scss';
 
-class PhoneForm extends Component {
-  input = React.createRef();
-  state = {
+const PhoneForm = ({ onCreate }) => {
+  const inputEl = useRef();
+  const [inputVal, setInputVal] = useState({
     name: '',
     phone: ''
-  };
+  });
+  const { name, phone } = inputVal;
 
-  handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'phone') {
+      const checkEn = /[a-zA-Z]/;
+      const checkKo = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+      const checkSc = /[~!@#$%^&*()_+|<>?:{}]/;
+
+      if (checkEn.test(value) || checkKo.test(value) || checkSc.test(value)) {
+        alert('숫자만 입력해주세요!');
+        return false;
+      }
+    }
+    setInputVal({
+      ...inputVal,
+      [name]: value
     });
   };
 
-  handleSumbmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.onCreate(this.state);
-    this.setState({
+    if (name === '' || phone === '') {
+      alert('이름과 전화번호를 입력하였는지 확인해 주세요.!');
+      return false;
+    }
+    alert(`${name}님 추가가 완료 되었습니다.`);
+    onCreate({ name, phone });
+    setInputVal({
       name: '',
       phone: ''
     });
+    inputEl.current.focus();
+  };
 
-    this.input.current.focus();
-  };
-  static defaultProps = {
-    data: []
-  };
-  render() {
-    return (
-      <form onSubmit={this.handleSumbmit}>
-        <input
-          name="name"
-          value={this.state.name}
-          onChange={this.handleChange}
-          type="text"
-          placeholder="이름"
-          ref={this.input}
-        />
-        <input
-          name="phone"
-          value={this.state.phone}
-          onChange={this.handleChange}
-          type="text"
-          placeholder="전화번호"
-        />
-        <button type="submit">등록</button>
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={handleSubmit} className="input-form">
+      <input
+        name="name"
+        placeholder="이름"
+        onChange={handleChange}
+        value={name}
+        ref={inputEl}
+      />
+      <input
+        name="phone"
+        placeholder="전화번호('-' 없이 입력해주세요)"
+        onChange={handleChange}
+        value={phone}
+      />
+      <button type="submit">등록</button>
+    </form>
+  );
+};
 
 export default PhoneForm;

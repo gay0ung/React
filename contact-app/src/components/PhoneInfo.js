@@ -1,103 +1,77 @@
-import React, { Component, Fragment } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-class PhoneInfo extends Component {
-  state = {
-    editing: false,
+const PhoneInfo = ({ info, onRemove, onUpdate }) => {
+  const spanEl = useRef();
+  const { name, phone, id } = info;
+  const [editing, setEditing] = useState(false);
+  const [inputVal, setInputVal] = useState({
     name: '',
     phone: ''
-  };
+  });
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state !== nextState) {
-      return true;
-    }
-    return this.props.info !== nextProps.info;
-  }
-
-  handleRemove = () => {
-    const { info, onRemove } = this.props;
-    onRemove(info.id);
-  };
-
-  // 수정
-  handleToggleEdit = () => {
-    const { info, onUpdate } = this.props;
-
-    if (this.state.editing) {
-      onUpdate(info.id, {
-        name: this.state.name,
-        phone: this.state.phone
+  const handleToggleEdit = () => {
+    if (editing) {
+      onUpdate(id, {
+        name: inputVal.name,
+        phone: inputVal.phone
       });
     } else {
-      this.setState({
-        name: info.name,
-        phone: info.phone
-      });
+      setInputVal({ name, phone });
     }
-
-    this.setState({
-      editing: !this.state.editing
-    });
+    setEditing(!editing);
   };
 
-  handleChange = (e) => {
-    this.setState({
+  const handleChange = (e) =>
+    setInputVal({
+      ...inputVal,
       [e.target.name]: e.target.value
     });
-  };
 
-  render() {
-    const { name, phone } = this.props.info;
-    const { editing } = this.state;
+  useEffect(() => {
+    if (!spanEl.current) return;
+    if (spanEl.current) {
+      return !spanEl.current
+        ? false
+        : (spanEl.current.style.hieght = spanEl.current.clientWidth);
+    }
+  });
 
-    // const style = {
-    //   width: '50px',
-    //   height: '50px',
-    //   display: 'block'
-    // };
-    return (
-      <div className="phone-info">
-        {editing ? (
-          <Fragment>
-            <div>
-              <input
-                name="name"
-                value={this.state.name}
-                onChange={this.handleChange}
-                placeholder="이름"
-              />
-              <input
-                onChange={this.handleChange}
-                name="phone"
-                value={this.state.phone}
-                placeholder="전화번호"
-              />
-            </div>
-          </Fragment>
-        ) : (
-          <Fragment>
-            <div className="address">
-              <div className="profile-img">이미지 나올자리</div>
-              <div>
-                <p>{name}</p>
-                <p>{phone}</p>
-              </div>
-            </div>
-          </Fragment>
-        )}
-        <button onClick={this.handleToggleEdit}>
-          {editing ? (
-            <i className="fas fa-check"></i>
-          ) : (
-            <i className="far fa-edit"></i>
-          )}
-        </button>
-        <button onClick={this.handleRemove}>
-          <i className="far fa-trash-alt"></i>
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={`address ${editing ? 'edit' : ''}`}>
+      {editing ? (
+        <>
+          <div>
+            이름 :
+            <input name="name" onChange={handleChange} value={inputVal.name} />
+          </div>
+          <div>
+            번호 :
+            <input
+              name="phone"
+              onChange={handleChange}
+              value={inputVal.phone}
+            />
+          </div>
+        </>
+      ) : (
+        <div className="address-info">
+          <span
+            className="address-icon"
+            ref={spanEl}
+            number={Math.floor(Math.random() * 50)}
+          />
+          <b>{name}</b>
+          <p>{phone}</p>
+        </div>
+      )}
+      <button onClick={() => onRemove(id, name)} className="delete-btn">
+        X
+      </button>
+      <button onClick={handleToggleEdit} className="edit-btn">
+        {editing ? '적용' : '수정'}
+      </button>
+    </div>
+  );
+};
 
 export default PhoneInfo;
